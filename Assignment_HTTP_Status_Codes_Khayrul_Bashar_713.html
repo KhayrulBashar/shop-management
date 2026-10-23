@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>Assignment: 20 Request code name & details - KHAYRUL BASHAR (ID: 713)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 14mm 14mm 16mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: Arial, 'Hind Siliguri', 'Segoe UI', Tahoma, sans-serif;
+      color: #0f172a;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      line-height: 1.5;
+      font-size: 13px;
+    }
+
+    /* Assignment Header Container */
+    .assignment-header-card {
+      border: 1.5px solid #0284c7;
+      border-radius: 8px;
+      padding: 14px 18px;
+      background: #f0f9ff;
+      margin-bottom: 16px;
+    }
+
+    .top-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #bae6fd;
+      padding-bottom: 6px;
+    }
+
+    .course-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0284c7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .topic-badge {
+      background: #0284c7;
+      color: #ffffff;
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .assignment-main-heading {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0369a1;
+      text-align: center;
+      margin: 4px 0 10px 0;
+    }
+
+    .student-details-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .detail-label {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .detail-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Section Title - Exactly matches user screenshot */
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0284c7;
+      margin: 16px 0 10px 0;
+    }
+
+    .intro-paragraph {
+      font-size: 12.5px;
+      color: #334155;
+      margin-bottom: 12px;
+      line-height: 1.55;
+    }
+
+    /* Table - Exactly matching user screenshot styling */
+    table.status-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #cbd5e1;
+      font-size: 12.5px;
+    }
+
+    table.status-table thead {
+      display: table-header-group;
+    }
+
+    table.status-table th {
+      background: #f1f5f9;
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 13px;
+      text-align: left;
+      padding: 9px 12px;
+      border: 1px solid #cbd5e1;
+    }
+
+    table.status-table td {
+      padding: 7px 11px;
+      border: 1px solid #cbd5e1;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    table.status-table tr {
+      page-break-inside: avoid;
+    }
+
+    table.status-table tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .col-code {
+      width: 70px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #0f172a;
+    }
+
+    .col-name {
+      width: 170px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .col-desc {
+      color: #334155;
+    }
+
+    /* Quick category helper */
+    .summary-box {
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      page-break-inside: avoid;
+    }
+
+    .summary-box-title {
+      font-weight: 700;
+      font-size: 12px;
+      color: #0369a1;
+      margin-bottom: 6px;
+    }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .summary-badge {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 4px 6px;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    .footer-note {
+      margin-top: 16px;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Assignment Meta Card -->
+  <div class="assignment-header-card">
+    <div class="top-meta">
+      <span class="course-title">Course: AI Software Engineering</span>
+      <span class="topic-badge">API Request &amp; Response Architecture</span>
+    </div>
+    <div class="assignment-main-heading">
+      Assignment: 20 Request code name &amp; details
+    </div>
+    <div class="student-details-grid">
+      <div class="detail-item">
+        <span class="detail-label">Student Name</span>
+        <span class="detail-val">KHAYRUL BASHAR</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Student ID</span>
+        <span class="detail-val">713</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Batch</span>
+        <span class="detail-val">26/09</span>
+      </div>
+      <div class="detail-item">
+        <span class="detail-label">Project Context</span>
+        <span class="detail-val">Shop Management System</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heading matching user's screenshot exactly -->
+  <div class="section-title">
+    ২.৩ স্ট্যান্ডার্ড HTTP Status Codes (যেগুলো সবার জানা উচিত)
+  </div>
+  <div class="intro-paragraph">
+    একটি ওয়েব অ্যাপ্লিকেশন বা RESTful API আর্কিটেকচারে ক্লায়েন্ট (যেমন ওয়েব ব্রাউজার, ফ্রন্টএন্ড Fetch API বা মোবাইল অ্যাপ) এবং ব্যাকএন্ড সার্ভারের মধ্যে প্রতিটি HTTP রিকোয়েস্টের ফলাফল নির্দেশ করতে স্ট্যান্ডার্ড ৩-সংখ্যার HTTP স্ট্যাটাস কোড ব্যবহৃত হয়। নিচে সফটওয়্যার ইঞ্জিনিয়ারিংয়ে সর্বাধিক ব্যবহৃত গুরুত্বপূর্ণ ২০টি কোড, তাদের অফিশিয়াল নাম এবং আমাদের প্রজেক্টে কখন আসে তা বিস্তারিতভাবে তুলে ধরা হলো:
+  </div>
+
+  <!-- Table containing the 20 HTTP Status Codes -->
+  <table class="status-table">
+    <thead>
+      <tr>
+        <th style="width: 70px;">কোড</th>
+        <th style="width: 175px;">নাম</th>
+        <th>অর্থ ও আমাদের প্রজেক্টে কখন আসে?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 1 -->
+      <tr>
+        <td class="col-code">100</td>
+        <td class="col-name">Continue</td>
+        <td class="col-desc">সার্ভার ক্লায়েন্টের প্রাথমিক অনুরোধের হেডার পেয়েছে এবং বাকি ডেটা/বডি পাঠানো চালিয়ে যেতে নির্দেশ দিচ্ছে।</td>
+      </tr>
+      <!-- 2 -->
+      <tr>
+        <td class="col-code">200</td>
+        <td class="col-name">OK</td>
+        <td class="col-desc">রিকোয়েস্ট সফল হয়েছে এবং ডেটা রিটার্ন হয়েছে (যেমন প্রোডাক্ট লিস্ট বা ড্যাশবোর্ড স্ট্যাটাস)।</td>
+      </tr>
+      <!-- 3 -->
+      <tr>
+        <td class="col-code">201</td>
+        <td class="col-name">Created</td>
+        <td class="col-desc">নতুন রেকর্ড সফলভাবে তৈরি হয়েছে (যেমন নতুন অর্ডার বা প্রোডাক্ট সফলভাবে ডেটাবেজে সেভ হয়েছে)।</td>
+      </tr>
+      <!-- 4 -->
+      <tr>
+        <td class="col-code">202</td>
+        <td class="col-name">Accepted</td>
+        <td class="col-desc">অনুরোধটি সার্ভার গ্রহণ করেছে কিন্তু প্রসেসিং এখনো ব্যাকগ্রাউন্ডে চলছে (যেমন বড় ইনভেন্টরি এক্সপোর্ট বা অ্যাসিনক্রোনাস কাজ)।</td>
+      </tr>
+      <!-- 5 -->
+      <tr>
+        <td class="col-code">204</td>
+        <td class="col-name">No Content</td>
+        <td class="col-desc">অ্যাকশন সফলভাবে সম্পন্ন হয়েছে কিন্তু রেসপন্সে ফেরত পাঠানোর মতো কোনো বডি নেই (যেমন কোনো কাস্টমার বা প্রোডাক্ট মুছে ফেলার পর)।</td>
+      </tr>
+      <!-- 6 -->
+      <tr>
+        <td class="col-code">301</td>
+        <td class="col-name">Moved Permanently</td>
+        <td class="col-desc">অনুরোধকৃত রিসোর্সটি স্থায়ীভাবে নতুন URL-এ স্থানান্তরিত হয়েছে (ব্রাউজার ও সার্চ ইঞ্জিন সরাসরি নতুন অ্যাড্রেসে রিডাইরেক্ট করে)।</td>
+      </tr>
+      <!-- 7 -->
+      <tr>
+        <td class="col-code">302</td>
+        <td class="col-name">Found (Redirect)</td>
+        <td class="col-desc">সাময়িক রিডাইরেকশন (যেমন লগইন ছাড়া প্রোটেক্টেড ড্যাশবোর্ডে প্রবেশের চেষ্টা করলে স্বয়ংক্রিয়ভাবে <code>/login</code> পেজে রিডাইরেক্ট করা)।</td>
+      </tr>
+      <!-- 8 -->
+      <tr>
+        <td class="col-code">304</td>
+        <td class="col-name">Not Modified</td>
+        <td class="col-desc">ব্রাউজার ক্যাশে থাকা ডেটা অপরিবর্তিত রয়েছে, ফলে ব্যান্ডউইথ বাঁচাতে সার্ভার থেকে পুনরায় নতুন ডেটা ডাউনলোডের প্রয়োজন নেই।</td>
+      </tr>
+      <!-- 9 -->
+      <tr>
+        <td class="col-code">400</td>
+        <td class="col-name">Bad Request</td>
+        <td class="col-desc">ক্লায়েন্টের তথ্যে কোনো যুক্তিগত ভুল (যেমন ইতিমধ্যে ব্যবহৃত SKU দিয়ে প্রোডাক্ট অ্যাড করার চেষ্টা)।</td>
+      </tr>
+      <!-- 10 -->
+      <tr>
+        <td class="col-code">401</td>
+        <td class="col-name">Unauthorized</td>
+        <td class="col-desc">ব্যবহারকারী লগইন করেননি বা কুকিতে থাকা JWT টোকেন মেয়াদোত্তীর্ণ বা অবৈধ।</td>
+      </tr>
+      <!-- 11 -->
+      <tr>
+        <td class="col-code">403</td>
+        <td class="col-name">Forbidden</td>
+        <td class="col-desc">ব্যবহারকারী লগইন অবস্থায় আছেন কিন্তু উক্ত রিসোর্স অ্যাক্সেস বা মডিফাই করার অনুমতি বা রোল তার নেই।</td>
+      </tr>
+      <!-- 12 -->
+      <tr>
+        <td class="col-code">404</td>
+        <td class="col-name">Not Found</td>
+        <td class="col-desc">যে আইডি চাওয়া হয়েছে তা ডেটাবেজে নেই (যেমন এমন কোনো অর্ডার আইডি যা বিদ্যমান নেই)।</td>
+      </tr>
+      <!-- 13 -->
+      <tr>
+        <td class="col-code">405</td>
+        <td class="col-name">Method Not Allowed</td>
+        <td class="col-desc">অনুরোধকৃত রুটে অননুমোদিত HTTP মেথড পাঠানো হয়েছে (যেমন যে এপিআই শুধু POST গ্রহণ করে সেখানে GET কল করা)।</td>
+      </tr>
+      <!-- 14 -->
+      <tr>
+        <td class="col-code">408</td>
+        <td class="col-name">Request Timeout</td>
+        <td class="col-desc">সার্ভার নির্ধারিত সময়ের মধ্যে ক্লায়েন্টের কাছ থেকে সম্পূর্ণ অনুরোধ পায়নি (ধীরগতির ইন্টারনেট বা সংযোগ বিচ্ছিন্ন)।</td>
+      </tr>
+      <!-- 15 -->
+      <tr>
+        <td class="col-code">409</td>
+        <td class="col-name">Conflict</td>
+        <td class="col-desc">ডেটাবেসের বর্তমান ডেটার সাথে সংঘর্ষ (যেমন ইতিমধ্যে নিবন্ধিত ইউনিক ইমেইল বা ফোন নম্বর দিয়ে দ্বিতীয়বার একাউন্ট খোলার চেষ্টা)।</td>
+      </tr>
+      <!-- 16 -->
+      <tr>
+        <td class="col-code">422</td>
+        <td class="col-name">Unprocessable Entity</td>
+        <td class="col-desc">Pydantic ডেটা ভ্যালিডেশন ব্যর্থ (যেমন দামের ঘরে সংখ্যার বদলে লেখা বা লিমিট অতিক্রম)।</td>
+      </tr>
+      <!-- 17 -->
+      <tr>
+        <td class="col-code">429</td>
+        <td class="col-name">Too Many Requests</td>
+        <td class="col-desc">নির্দিষ্ট সময়ের মধ্যে অনুমোদিত সীমার অতিরিক্ত রিকোয়েস্ট পাঠানো হয়েছে (Rate Limiting বা ব্রুট-ফোর্স অ্যাটাক রোধে)।</td>
+      </tr>
+      <!-- 18 -->
+      <tr>
+        <td class="col-code">500</td>
+        <td class="col-name">Internal Server Error</td>
+        <td class="col-desc">সার্ভারের অভ্যন্তরীণ ক্র্যাশ বা ডেটাবেস কানেকশন ফেইলিয়র।</td>
+      </tr>
+      <!-- 19 -->
+      <tr>
+        <td class="col-code">502</td>
+        <td class="col-name">Bad Gateway</td>
+        <td class="col-desc">রিভার্স প্রক্সি বা গেটওয়ে (যেমন Nginx) মূল ব্যাকএন্ড সার্ভার (FastAPI/Uvicorn) থেকে অকার্যকর বা ব্যর্থ রেসপন্স পেয়েছে।</td>
+      </tr>
+      <!-- 20 -->
+      <tr>
+        <td class="col-code">503</td>
+        <td class="col-name">Service Unavailable</td>
+        <td class="col-desc">সার্ভারে অতিরিক্ত ট্রাফিক চাপ বা সাময়িক সিস্টেম মেইনটেন্যান্স চলার কারণে সেবা সাময়িকভাবে বন্ধ থাকা।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Category Summary Card -->
+  <div class="summary-box">
+    <div class="summary-box-title">HTTP Status Code ৫টি প্রধান ক্যাটাগরি সারসংক্ষেপ:</div>
+    <div class="summary-list">
+      <div class="summary-badge"><strong>1xx:</strong> Informational</div>
+      <div class="summary-badge"><strong>2xx:</strong> Success</div>
+      <div class="summary-badge"><strong>3xx:</strong> Redirection</div>
+      <div class="summary-badge"><strong>4xx:</strong> Client Error</div>
+      <div class="summary-badge"><strong>5xx:</strong> Server Error</div>
+    </div>
+  </div>
+
+  <!-- Page Footer -->
+  <div class="footer-note">
+    <span>Course: AI Software Engineering | Student: KHAYRUL BASHAR (ID: 713, Batch: 26/09)</span>
+    <span>Shop Management System &bull; Academic Assignment Submission</span>
+  </div>
+
+</body>
+</html>

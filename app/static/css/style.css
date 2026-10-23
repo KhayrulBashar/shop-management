@@ -1,0 +1,289 @@
+/* ==========================================================================
+   Shop Management System - Custom Modern Stylesheet
+   ========================================================================== */
+
+/* Google Font Import (JetBrains Mono for SKU / Numbers) */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  --brand-bg: #020617;
+  --brand-card: #0F172A;
+  --brand-card-sub: #1E293B;
+  --brand-border: #334155;
+  --brand-cyan: #22D3EE;
+  --brand-cyan-light: #67E8F9;
+  --brand-indigo: #6366F1;
+  --brand-indigo-dark: #4F46E5;
+  --brand-purple-aura: #A855F7;
+  --brand-success: #10B981;
+  --brand-warning: #F59E0B;
+  --brand-danger: #F43F5E;
+}
+
+html, body, input, select, textarea, button {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--brand-bg);
+  color: #F8FAFC;
+  overflow-x: hidden;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090D1A;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Glassmorphic Effects */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(51, 65, 85, 0.7);
+}
+
+.glass-modal {
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(51, 65, 85, 0.9);
+}
+
+/* Ambient Glow Blobs */
+.ambient-glow-1 {
+  position: fixed;
+  top: -10%;
+  left: 20%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, rgba(168, 85, 247, 0) 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ambient-glow-2 {
+  position: fixed;
+  bottom: -10%;
+  right: 15%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.10) 0%, rgba(99, 102, 241, 0) 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated gradient border glow */
+.glow-border {
+  position: relative;
+}
+.glow-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.4), rgba(99, 102, 241, 0.4), rgba(168, 85, 247, 0.4));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Print Invoice Stylesheet
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 12mm 15mm;
+  }
+
+  html, body {
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide everything except the invoice modal and container */
+  body > * {
+    display: none !important;
+  }
+
+  body > .relative.z-10 {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .flex.h-screen {
+    display: none !important;
+  }
+
+  #productModal,
+  #customerModal,
+  #customerHistoryModal,
+  #orderModal,
+  #orderStatusModal,
+  #stockModal,
+  #confirmModal,
+  #toastContainer,
+  .ambient-glow-1,
+  .ambient-glow-2,
+  .no-print {
+    display: none !important;
+  }
+
+  #invoiceModal {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    inset: auto !important;
+    background: #ffffff !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    z-index: auto !important;
+  }
+
+  #invoiceModal > div.glass-modal {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  #printableInvoice {
+    display: block !important;
+    visibility: visible !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  #printableInvoice,
+  #printableInvoice * {
+    color: #0f172a !important;
+    text-shadow: none !important;
+  }
+
+  #printableInvoice .text-white,
+  #printableInvoice .text-slate-100,
+  #printableInvoice .text-slate-200,
+  #printableInvoice .text-slate-300,
+  #printableInvoice .text-slate-400,
+  #printableInvoice .text-slate-500 {
+    color: #334155 !important;
+  }
+
+  #printableInvoice .font-bold.text-white,
+  #printableInvoice .font-extrabold.text-white,
+  #printableInvoice #invCustName {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  #printableInvoice #invNumber {
+    color: #0284c7 !important;
+    font-size: 14pt !important;
+    font-weight: 800 !important;
+  }
+
+  #printableInvoice #invGrandTotal {
+    color: #0284c7 !important;
+    font-size: 18pt !important;
+    font-weight: 900 !important;
+  }
+
+  #printableInvoice .text-brand-cyan {
+    color: #0284c7 !important;
+  }
+
+  #printableInvoice .border,
+  #printableInvoice .border-t,
+  #printableInvoice .border-b {
+    border-color: #cbd5e1 !important;
+  }
+
+  #printableInvoice table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 15px !important;
+    margin-bottom: 15px !important;
+  }
+
+  #printableInvoice thead {
+    background-color: #f1f5f9 !important;
+  }
+
+  #printableInvoice thead th {
+    color: #1e293b !important;
+    font-weight: 700 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 8px 10px !important;
+    font-size: 9.5pt !important;
+  }
+
+  #printableInvoice tbody td {
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 8px 10px !important;
+    font-size: 10pt !important;
+  }
+
+  #printableInvoice tbody tr:nth-child(even) {
+    background-color: #f8fafc !important;
+  }
+
+  #printableInvoice #invOrderStatus {
+    color: #059669 !important;
+    font-weight: 700 !important;
+  }
+
+  #printableInvoice #invPaymentStatus {
+    color: #d97706 !important;
+    font-weight: 700 !important;
+  }
+}

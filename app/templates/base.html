@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Shop Management System{% endblock %}</title>
+  
+  <!-- Google Font (JetBrains Mono for SKU / Numbers) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#020617',
+              card: '#0F172A',
+              cardSub: '#1E293B',
+              border: '#334155',
+              cyan: '#22D3EE',
+              cyanLight: '#67E8F9',
+              indigo: '#6366F1',
+              indigoDark: '#4F46E5',
+              purpleAura: '#A855F7',
+              success: '#10B981',
+              warning: '#F59E0B',
+              danger: '#F43F5E',
+            }
+          },
+          fontFamily: {
+            sans: ['Arial', 'Helvetica', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="/static/css/style.css?v=2.4">
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-brand-bg text-slate-100 min-h-screen selection:bg-brand-cyan/20 selection:text-brand-cyan relative">
+
+  <!-- Ambient Glow Blobs -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none max-w-sm w-full"></div>
+
+  <!-- Global Confirm Modal -->
+  <div id="confirmModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm hidden transition-opacity duration-200">
+    <div class="glass-modal bg-brand-card border border-brand-border rounded-2xl p-6 max-w-md w-full mx-4 shadow-2xl scale-95 transition-transform duration-200">
+      <div class="flex items-center gap-3 text-brand-danger mb-4">
+        <div class="w-10 h-10 rounded-full bg-brand-danger/10 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+        </div>
+        <h3 id="confirmModalTitle" class="text-lg font-bold text-white">Confirm Action</h3>
+      </div>
+      <p id="confirmModalMessage" class="text-slate-300 text-sm mb-6 leading-relaxed">Are you sure you want to proceed?</p>
+      <div class="flex justify-end gap-3">
+        <button id="confirmModalCancelBtn" class="px-4 py-2 rounded-xl text-sm font-medium bg-brand-cardSub text-slate-300 hover:text-white hover:bg-brand-border border border-brand-border transition-all">
+          Cancel
+        </button>
+        <button id="confirmModalOkBtn" class="px-5 py-2 rounded-xl text-sm font-semibold bg-brand-danger hover:bg-rose-600 text-white shadow-lg shadow-rose-900/40 transition-all">
+          Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Block -->
+  <div class="relative z-10">
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+    // Initialize Lucide icons on load
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+    });
+
+    // Toast helper
+    window.showToast = function(message, type = "success") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl backdrop-blur-md transition-all duration-300 translate-y-2 opacity-0 text-sm font-medium`;
+      
+      let borderClass = "border-brand-border bg-brand-card/95 text-slate-100";
+      let iconHtml = '<i data-lucide="info" class="w-5 h-5 text-brand-cyan"></i>';
+
+      if (type === "success") {
+        borderClass = "border-emerald-500/40 bg-brand-card/95 text-emerald-300";
+        iconHtml = '<i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400"></i>';
+      } else if (type === "error" || type === "danger") {
+        borderClass = "border-rose-500/40 bg-brand-card/95 text-rose-300";
+        iconHtml = '<i data-lucide="alert-circle" class="w-5 h-5 text-rose-400"></i>';
+      } else if (type === "warning") {
+        borderClass = "border-amber-500/40 bg-brand-card/95 text-amber-300";
+        iconHtml = '<i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400"></i>';
+      }
+
+      toast.className += ` ${borderClass}`;
+      toast.innerHTML = `
+        <div class="flex-shrink-0">${iconHtml}</div>
+        <div class="flex-1">${message}</div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white text-xs ml-2">✕</button>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons({ root: toast });
+
+      requestAnimationFrame(() => {
+        toast.classList.remove("translate-y-2", "opacity-0");
+        toast.classList.add("translate-y-0", "opacity-100");
+      });
+
+      setTimeout(() => {
+        toast.classList.add("opacity-0", "translate-x-4");
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    };
+
+    // Confirm Modal Helper
+    window.showConfirmModal = function({ title, message, onConfirm }) {
+      const modal = document.getElementById("confirmModal");
+      const titleEl = document.getElementById("confirmModalTitle");
+      const msgEl = document.getElementById("confirmModalMessage");
+      const okBtn = document.getElementById("confirmModalOkBtn");
+      const cancelBtn = document.getElementById("confirmModalCancelBtn");
+
+      titleEl.textContent = title || "Confirm Action";
+      msgEl.textContent = message || "Are you sure you want to proceed?";
+
+      modal.classList.remove("hidden");
+      lucide.createIcons();
+
+      const cleanup = () => {
+        modal.classList.add("hidden");
+        okBtn.onclick = null;
+        cancelBtn.onclick = null;
+      };
+
+      okBtn.onclick = () => {
+        cleanup();
+        if (onConfirm) onConfirm();
+      };
+
+      cancelBtn.onclick = cleanup;
+    };
+  </script>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <title>API Masterclass & Architecture Guide - Shop Management System</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 14mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-size: 9pt;
+        color: #64748b;
+      }
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    }
+    
+    body {
+      color: #1e293b;
+      background: #ffffff;
+      font-size: 11pt;
+      line-height: 1.6;
+    }
+
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 40px 20px;
+      border: 3px solid #0284c7;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #f8fafc 0%, #f0fdfa 100%);
+    }
+
+    .cover-top {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 6px 16px;
+      background: #0284c7;
+      color: #ffffff;
+      font-size: 10pt;
+      font-weight: bold;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .cover-title {
+      font-size: 28pt;
+      font-weight: 900;
+      color: #0f172a;
+      line-height: 1.25;
+      margin-bottom: 15px;
+    }
+
+    .cover-title span {
+      color: #0284c7;
+    }
+
+    .cover-subtitle {
+      font-size: 14pt;
+      color: #475569;
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .cover-features-box {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 30px auto;
+      max-width: 600px;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .cover-features-box h4 {
+      font-size: 12pt;
+      color: #0f172a;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 6px;
+    }
+
+    .cover-features-list {
+      list-style-type: none;
+    }
+
+    .cover-features-list li {
+      margin-bottom: 8px;
+      font-size: 10.5pt;
+      color: #334155;
+      display: flex;
+      align-items: center;
+    }
+
+    .cover-features-list li::before {
+      content: "✔";
+      color: #0284c7;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .cover-footer {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 15px;
+      font-size: 10pt;
+      color: #64748b;
+    }
+
+    /* Section Styles */
+    h1.sec-title {
+      font-size: 18pt;
+      color: #0f172a;
+      border-bottom: 3px solid #0284c7;
+      padding-bottom: 8px;
+      margin-top: 10px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h2.sub-title {
+      font-size: 14pt;
+      color: #0369a1;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    h3.minor-title {
+      font-size: 12pt;
+      color: #1e293b;
+      margin-top: 15px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      color: #334155;
+      text-align: justify;
+    }
+
+    /* Callout & Alert Boxes */
+    .callout {
+      background: #f0f9ff;
+      border-left: 4px solid #0284c7;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      margin: 14px 0;
+      font-size: 10.5pt;
+    }
+
+    .callout-success {
+      background: #f0fdf4;
+      border-left-color: #16a34a;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-left-color: #d97706;
+    }
+
+    .callout-title {
+      font-weight: bold;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 10pt;
+    }
+
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: bold;
+      text-align: left;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    td {
+      padding: 8px 10px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+      vertical-align: top;
+    }
+
+    tr:nth-child(even) td {
+      background: #f8fafc;
+    }
+
+    /* Method Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 8.5pt;
+      font-weight: bold;
+      font-family: monospace;
+    }
+
+    .badge-get { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .badge-post { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-put { background: #fef3c7; color: #b45309; border: 1px solid #fde68a; }
+    .badge-patch { background: #ede9fe; color: #6d28d9; border: 1px solid #ddd6fe; }
+    .badge-delete { background: #ffe4e6; color: #be123c; border: 1px solid #fecdd3; }
+
+    /* Code Blocks */
+    pre, code {
+      font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+    }
+
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 9.5pt;
+      line-height: 1.45;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    p code, td code, li code {
+      background: #e2e8f0;
+      color: #0f172a;
+      padding: 2px 5px;
+      border-radius: 4px;
+      font-size: 9.5pt;
+    }
+
+    /* Flowchart / Box layout */
+    .diagram-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      background: #fafafa;
+      padding: 14px;
+      margin: 14px 0;
+      font-family: monospace;
+      font-size: 9.5pt;
+      line-height: 1.5;
+    }
+
+    .step-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      background: #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .step-num {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #0284c7;
+      color: #fff;
+      text-align: center;
+      line-height: 24px;
+      font-weight: bold;
+      font-size: 9pt;
+      margin-right: 8px;
+    }
+
+    .step-header {
+      font-weight: bold;
+      font-size: 11pt;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    /* Q&A section */
+    .qa-box {
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px dashed #cbd5e1;
+    }
+
+    .qa-question {
+      font-weight: bold;
+      color: #0f172a;
+      font-size: 11pt;
+      margin-bottom: 4px;
+    }
+
+    .qa-answer {
+      color: #334155;
+      font-size: 10.5pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 1: COVER PAGE                                            -->
+  <!-- ===================================================================== -->
+  <div class="cover-page">
+    <div class="cover-top">
+      <div class="badge-pill">Enterprise Presentation Guide</div>
+      <div class="cover-title">Shop Management System<br><span>API Architecture & Masterclass</span></div>
+      <div class="cover-subtitle">
+        এপিআই কী, কিভাবে সফটওয়্যারে কাজ করে, মেথডসমূহ (GET, POST, PUT, PATCH, DELETE), CRUD অপারেশন এবং কোড স্ট্রাকচারের পূর্ণাঙ্গ স্টেপ-বাই-স্টেপ গাইড
+      </div>
+    </div>
+
+    <div class="cover-features-box">
+      <h4>এই প্রেজেন্টেশনে যা যা কভার করা হয়েছে:</h4>
+      <ul class="cover-features-list">
+        <li><strong>মডিউল ১:</strong> API এর বেসিক পরিচিতি ও রিয়েল-লাইফ রেস্তোরাঁ অ্যানালজি</li>
+        <li><strong>মডিউল ২:</strong> HTTP Protocols, Verbs, Headers & Status Codes</li>
+        <li><strong>মডিউল ৩:</strong> FastAPI Swagger UI (<code>http://127.0.0.1:8000/docs</code>) এর কাজ ও ব্যবহার</li>
+        <li><strong>মডিউল ৪:</strong> আমাদের প্রজেক্টের কোড আর্কিটেকচার (কোন ফোল্ডার ও ফাইলে কি আছে)</li>
+        <li><strong>মডিউল ৫:</strong> সম্পূর্ণ ১৭টি এপিআই এন্ডপয়েন্টের পুঙ্খানুপুঙ্খ বিবরণ</li>
+        <li><strong>মডিউল ৬:</strong> বাস্তব সিনারিও (লগইন, স্টক অটো-ডিডাকশন, রিফান্ড ও রেভিনিউ লজিক)</li>
+        <li><strong>মডিউল ৭:</strong> ভাইভা / প্রেজেন্টেশন প্রশ্নোত্তর প্রস্তুতি (১০টি কোর প্রশ্ন)</li>
+      </ul>
+    </div>
+
+    <div class="cover-footer">
+      <div><strong>Project:</strong> Shop Management System (FastAPI + PostgreSQL + Tailwind)</div>
+      <div><strong>Target Audience:</strong> Presentation / Viva / Interview / Technical Review</div>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 2: MODULE 1 - API FUNDAMENTALS                           -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ১: API কী এবং সফটওয়্যারে এটি কিভাবে কাজ করে?</h1>
+
+  <h2 class="sub-title">১.১ API এর সংজ্ঞা (What is an API?)</h2>
+  <p>
+    <strong>API</strong> এর পূর্ণরূপ হলো <strong>Application Programming Interface</strong>। সহজ বাংলায় API হলো একটি <strong>ডিজিটাল সেতু বা বার্তাবাহক (Messenger)</strong>, যার মাধ্যমে দুটি ভিন্ন সফটওয়্যার সিস্টেম (যেমন ব্রাউজারের ফ্রন্টএন্ড এবং সার্ভারের ব্যাকএন্ড) নিরাপদে একে অপরের সাথে ডেটা আদান-প্রদান করে।
+  </p>
+
+  <div class="callout">
+    <div class="callout-title">🍽️ রিয়েল-লাইফ রেস্তোরাঁ অ্যানালজি (The Restaurant Waiter Analogy)</div>
+    API বোঝার জন্য একটি রেস্তোরাঁর উদাহরণ সবচেয়ে সেরা:
+    <ul style="margin-left: 20px; margin-top: 6px;">
+      <li><strong>১. কাস্টমার (Customer) = ফ্রন্টএন্ড / ব্রাউজার (Frontend / Client):</strong> আপনি চেয়ারে বসে মেনু কার্ড দেখে খাবার পছন্দ করেন এবং অর্ডার দেন।</li>
+      <li><strong>২. ওয়েটার (Waiter) = API (Application Programming Interface):</strong> ওয়েটার আপনার অর্ডারটি খাতায় লিখে রান্নাঘরে পৌঁছে দেয় এবং রান্না শেষ হলে খাবার এনে আপনার টেবিলে পরিবেশন করে।</li>
+      <li><strong>৩. রান্নাঘর ও শেফ (Kitchen & Chef) = ব্যাকএন্ড ও ডেটাবেস (FastAPI & PostgreSQL):</strong> সেখানে খাবার (ডেটা) প্রস্তুত থাকে এবং শেফ নিয়ম মেনে রান্না করে ওয়েটারকে দেয়।</li>
+    </ul>
+    <em>এখানে কাস্টমার কখনো সরাসরি রান্নাঘরে ঢোকে না (সিকিউরিটি); ওয়েটার মাঝখানে নিয়মতান্ত্রিকভাবে কাজ করে—ঠিক একইভাবে ফ্রন্টএন্ড সরাসরি ডেটাবেস টাচ করে না, API এর মাধ্যমে যোগাযোগ করে।</em>
+  </div>
+
+  <h2 class="sub-title">১.২ সফটওয়্যারে API কেন অপরিহার্য?</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">সুবিধা</th>
+        <th style="width: 75%;">কেন এটি জরুরি এবং কীভাবে কাজ করে?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>১. ডিসেন্ট্রালাইজড আর্কিটেকচার</strong></td>
+        <td>ফ্রন্টএন্ড (HTML/CSS/JS) এবং ব্যাকএন্ড (Python/FastAPI) সম্পূর্ণ আলাদা থাকে। ফলে ভবিষ্যতে মোবাইল অ্যাপ বা ডেক্সটপ অ্যাপ বানালেও একই ব্যাকএন্ড API ব্যবহার করা যাবে।</td>
+      </tr>
+      <tr>
+        <td><strong>২. নিরাপত্তা (Security)</strong></td>
+        <td>ডেটাবেসের পাসওয়ার্ড, সিক্রেট কি এবং আসল বিজনেস লজিক ক্লায়েন্টের কাছে প্রকাশ পায় না। API শুধুমাত্র অনুমোদিত রিকোয়েস্টে বৈধ ডেটা দেয়।</td>
+      </tr>
+      <tr>
+        <td><strong>৩. রিঅ্যাক্টিভ ও ফাস্ট ইউজার এক্সপেরিয়েন্স</strong></td>
+        <td>পুরো পেজ রিলোড না দিয়ে শুধুমাত্র ব্যাকগ্রাউন্ডে JSON ডেটা নিয়ে এসে স্ক্রিনের অংশবিশেষ পরিবর্তন করা যায় (SPA - Single Page Application স্টাইল)।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">১.৩ ক্লায়েন্ট-সার্ভার আর্কিটেকচার ডায়াগ্রাম</h2>
+  <div class="diagram-box">
+┌─────────────────────────────────┐
+│     USER / BROWSER (Client)     │
+│   HTML5 + Tailwind CSS + JS     │
+└────────────────┬────────────────┘
+                 │
+                 │ 1. HTTP Request (GET, POST, etc.) + JSON Payload
+                 ▼
+┌─────────────────────────────────┐
+│      FASTAPI APPLICATION        │ <── app/main.py & app/api/
+│   Route Matching & Auth Check   │
+└────────────────┬────────────────┘
+                 │
+                 │ 2. Pydantic Schema Validation (app/schemas/)
+                 │ 3. Database Async Query via SQLAlchemy (app/models/)
+                 ▼
+┌─────────────────────────────────┐
+│      POSTGRESQL DATABASE        │
+│   Tables: products, orders, etc │
+└────────────────┬────────────────┘
+                 │
+                 │ 4. SQL Execution Result
+                 ▼
+┌─────────────────────────────────┐
+│    HTTP Response (JSON + 200)   │ ──> Browser updates DOM without reload!
+└─────────────────────────────────┘
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 3: MODULE 2 - HTTP PROTOCOLS & CRUD                     -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ২: HTTP Protocols, Verbs, এবং CRUD অপারেশন</h1>
+
+  <h2 class="sub-title">২.১ CRUD অপারেশন কী? (Create, Read, Update, Delete)</h2>
+  <p>
+    যেকোনো ডেটাবেস-চালিত অ্যাপ্লিকেশনে ডেটা পরিচালনার ৪টি মৌলিক কাজ থাকে, যাকে সংক্ষেপে <strong>CRUD</strong> বলা হয়। RESTful API তে এই ৪টি কাজের জন্য নির্দিষ্ট <strong>HTTP Verbs (Methods)</strong> ব্যবহার করা হয়:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>CRUD অ্যাকশন</th>
+        <th>HTTP Method</th>
+        <th>আমাদের প্রজেক্টের রিয়েল উদাহরণ</th>
+        <th>কাজ ও বৈশিষ্ট্য</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Create</strong> (নতুন তৈরি)</td>
+        <td><span class="badge badge-post">POST</span></td>
+        <td><code>POST /api/products</code><br><code>POST /api/orders</code></td>
+        <td>সার্ভারে নতুন ডেটা যোগ করতে ব্যবহৃত হয়। সাথে ডেটার পেলোড (Body) পাঠাতে হয়। সফল হলে স্ট্যাটাস কোড <strong>201 Created</strong> ফেরত দেয়।</td>
+      </tr>
+      <tr>
+        <td><strong>Read</strong> (ডেটা দেখা)</td>
+        <td><span class="badge badge-get">GET</span></td>
+        <td><code>GET /api/products</code><br><code>GET /api/dashboard/stats</code></td>
+        <td>সার্ভার থেকে শুধু ডেটা পড়ার জন্য ব্যবহৃত হয়। এটি সার্ভারের কোনো ডেটা পরিবর্তন করে না (Idempotent & Safe)।</td>
+      </tr>
+      <tr>
+        <td><strong>Update</strong> (সম্পূর্ণ পরিবর্তন)</td>
+        <td><span class="badge badge-put">PUT</span></td>
+        <td><code>PUT /api/products/{id}</code><br><code>PUT /api/customers/{id}</code></td>
+        <td>একটি বিদ্যমান রেকর্ডের সমস্ত ফিল্ড একসাথে পরিবর্তন/প্রতিস্থাপন করতে ব্যবহৃত হয়।</td>
+      </tr>
+      <tr>
+        <td><strong>Partial Update</strong> (আংশিক পরিবর্তন)</td>
+        <td><span class="badge badge-patch">PATCH</span></td>
+        <td><code>PATCH /api/orders/{id}/status</code></td>
+        <td>পুরো রেকর্ড না বদলে শুধুমাত্র নির্দিষ্ট এক বা দুটি ফিল্ড আপডেট করতে ব্যবহৃত হয় (যেমন শুধুমাত্র অর্ডারের Status Delivered বা Cancelled করা)।</td>
+      </tr>
+      <tr>
+        <td><strong>Delete</strong> (মুছে ফেলা)</td>
+        <td><span class="badge badge-delete">DELETE</span></td>
+        <td><code>DELETE /api/products/{id}</code><br><code>DELETE /api/customers/{id}</code></td>
+        <td>সার্ভার থেকে কোনো রেকর্ড মুছে ফেলার জন্য। আমাদের প্রজেক্টে ডেটা ইন্টিগ্রিটির জন্য এটি সফট-ডিলিট (<code>is_deleted = True</code>) করে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">২.২ একটি HTTP Request এর উপাদানসমূহ (Anatomy of a Request)</h2>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">১</span> Request URL / Endpoint</div>
+    সার্ভারের নির্দিষ্ট ঠিকানার পাথ। যেমন: <code>http://127.0.0.1:8000/api/products</code>
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">২</span> HTTP Method</div>
+    অ্যাকশন নির্দেশ করে: <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>PATCH</code>, বা <code>DELETE</code>
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৩</span> Headers (হেডার)</div>
+    রিকোয়েস্টের অতিরিক্ত মেটা-তথ্য। যেমন: <code>Content-Type: application/json</code> (ডেটা ফরম্যাট) এবং <code>Cookie: access_token=...</code> (অথেন্টিকেশন পরিচয়)।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৪</span> Query Parameters</div>
+    ইউআরএলের শেষে <code>?</code> দিয়ে পাঠানো ফিল্টার বা পেজিনেশন তথ্য। যেমন: <code>/api/products?page=1&page_size=20&search=mouse</code>
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৫</span> Request Body (JSON Payload)</div>
+    সার্ভারে যে ডেটা পাঠাচ্ছেন। যেমন নতুন পণ্য তৈরির সময়:
+    <pre>{
+  "name": "Wireless Mechanical Keyboard",
+  "sku": "ELEC-KEY-001",
+  "category": "Electronics",
+  "price": 4500.00,
+  "stock_quantity": 25,
+  "reorder_level": 5
+}</pre>
+  </div>
+
+  <h2 class="sub-title">২.৩ স্ট্যান্ডার্ড HTTP Status Codes (যেগুলো সবার জানা উচিত)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>কোড</th>
+        <th>নাম</th>
+        <th>অর্থ ও আমাদের প্রজেক্টে কখন আসে?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>200</strong></td>
+        <td>OK</td>
+        <td>রিকোয়েস্ট সফল হয়েছে এবং ডেটা রিটার্ন হয়েছে (যেমন প্রোডাক্ট লিস্ট বা ড্যাশবোর্ড স্ট্যাটস)।</td>
+      </tr>
+      <tr>
+        <td><strong>201</strong></td>
+        <td>Created</td>
+        <td>নতুন রেকর্ড সফলভাবে তৈরি হয়েছে (যেমন নতুন অর্ডার বা প্রোডাক্ট সফলভাবে ডেটাবেজে সেভ হয়েছে)।</td>
+      </tr>
+      <tr>
+        <td><strong>400</strong></td>
+        <td>Bad Request</td>
+        <td>ক্লায়েন্টের তথ্যে কোনো যুক্তিগত ভুল (যেমন ইতিমধ্যে ব্যবহৃত SKU দিয়ে প্রোডাক্ট অ্যাড করার চেষ্টা)।</td>
+      </tr>
+      <tr>
+        <td><strong>401</strong></td>
+        <td>Unauthorized</td>
+        <td>ব্যবহারকারী লগইন করেননি বা কুকিতে থাকা JWT টোকেন মেয়াদোত্তীর্ণ বা অবৈধ।</td>
+      </tr>
+      <tr>
+        <td><strong>404</strong></td>
+        <td>Not Found</td>
+        <td>যে আইডি চাওয়া হয়েছে তা ডেটাবেজে নেই (যেমন এমন কোনো অর্ডার আইডি যা বিদ্যমান নেই)।</td>
+      </tr>
+      <tr>
+        <td><strong>422</strong></td>
+        <td>Unprocessable Entity</td>
+        <td>Pydantic ডেটা ভ্যালিডেশন ব্যর্থ (যেমন দামের ঘরে সংখ্যার বদলে লেখা বা লিমিট অতিক্রম)।</td>
+      </tr>
+      <tr>
+        <td><strong>500</strong></td>
+        <td>Internal Server Error</td>
+        <td>সার্ভারের অভ্যন্তরীণ ক্র্যাশ বা ডেটাবেস কানেকশন ফেইলিয়র।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 4: MODULE 3 - FASTAPI SWAGGER UI (/docs)                -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৩: FastAPI Swagger UI (http://127.0.0.1:8000/docs) কী?</h1>
+
+  <h2 class="sub-title">৩.১ Swagger UI কী এবং এটি কিভাবে নিজে নিজে তৈরি হয়?</h2>
+  <p>
+    আপনি যখন ব্রাউজারে <strong><code>http://127.0.0.1:8000/docs</code></strong> ওপেন করেন, তখন আপনি একটি ইন্টারেক্টিভ ও চমৎকার ওয়েব পেজ দেখতে পান যেখানে আপনার অ্যাপের সব এপিআই তালিকাভুক্ত থাকে। 
+  </p>
+  <p>
+    অন্যান্য ফ্রেমওয়ার্কে (যেমন Django বা Flask) এপিআই ডকুমেন্টেশন তৈরি করতে আলাদাভাবে প্রচুর কোড বা থার্ড-পার্টি টুল লিখতে হয়। কিন্তু <strong>FastAPI এর অন্যতম ম্যাজিক হলো এটি সম্পূর্ণ স্বয়ংক্রিয়ভাবে OpenAPI স্পেসিফিকেশন থেকে Swagger UI রেন্ডার করে।</strong>
+  </p>
+
+  <div class="callout callout-success">
+    <div class="callout-title">💡 কীভাবে এটি স্বয়ংক্রিয়ভাবে তৈরি হয়?</div>
+    <ol style="margin-left: 20px; line-height: 1.6;">
+      <li>আমরা যখন Python ফাংশনের উপরে <code>@router.get(...)</code> বা <code>@router.post(...)</code> লিখি, FastAPI তা ট্র্যাক করে।</li>
+      <li>ফাংশনে ব্যবহৃত <strong>Pydantic Schemas</strong> (যেমন <code>ProductCreate</code>, <code>ProductResponse</code>) থেকে FastAPI স্বয়ংক্রিয়ভাবে বুঝে নেয় কোন ফিল্ড রিকোয়ার্ড, কোনটা অপশনাল, কোনটা ইন্টিজার বা স্ট্রিং।</li>
+      <li>FastAPI ব্যাকগ্রাউন্ডে একটি <code>/openapi.json</code> ফাইল তৈরি করে, এবং Swagger UI সেটি ব্রাউজারে সুন্দর গ্রাফিক্যাল ইন্টারফেসে রূপান্তর করে।</li>
+    </ol>
+  </div>
+
+  <h2 class="sub-title">৩.২ /docs পেজের মাধ্যমে ব্রাউজার থেকেই API টেস্ট করার নিয়ম</h2>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">১</span> এন্ডপয়েন্ট এক্সপ্যান্ড করুন</div>
+    যেকোনো এপিআই (যেমন <code>POST /api/products</code>) এর উপর ক্লিক করুন।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">২</span> "Try it out" বাটনে ক্লিক করুন</div>
+    ডানপাশে থাকা <strong>"Try it out"</strong> বাটনে ক্লিক করলে ইনপুট ফিল্ডগুলো এডিটেবল হয়ে যাবে।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৩</span> Request Body বা Parameters পূরণ করুন</div>
+    প্রয়োজনীয় মান যেমন পণ্যের নাম, দাম, SKU ইত্যাদি লিখুন।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৪</span> "Execute" বাটন চাপুন</div>
+    নীল রঙের <strong>"Execute"</strong> বাটনে ক্লিক করলেই ব্রাউজার স্বয়ংক্রিয়ভাবে আসল ডেটাবেসে রিকোয়েস্ট পাঠাবে এবং সাথে সাথে নিচের রেসপন্স বক্সে Status Code (200/201), Response Body (JSON), এবং Response Headers প্রদর্শন করবে।
+  </div>
+
+  <div class="callout">
+    <div class="callout-title">📌 বিকল্প ভিউ: ReDoc (<code>http://127.0.0.1:8000/redoc</code>)</div>
+    FastAPI স্বয়ংক্রিয়ভাবে <strong>ReDoc</strong> ইন্টারফেসও প্রদান করে, যা ক্লায়েন্ট বা থার্ড-পার্টি ডেভেলপারদের পড়ার উপযোগী একটি ক্লিন বুক-স্টাইলের ডকুমেন্টেশন।
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 5: MODULE 4 - PROJECT ARCHITECTURE & FILE MAPPING       -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৪: আমাদের প্রজেক্ট আর্কিটেকচার ও ফাইল কানেকশন ম্যাপ</h1>
+
+  <h2 class="sub-title">৪.১ ফোল্ডার স্ট্রাকচার ও দায়িত্ব বিভাজন (Layered Architecture)</h2>
+  <p>
+    আমাদের প্রজেক্টটি একটি প্রফেশনাল ও মডুলার <strong>Separation of Concerns</strong> প্যাটার্নে তৈরি। নিচে প্রতিটি ফোল্ডার ও ফাইলের দায়িত্ব এবং কানেকশন ব্যাখ্যা করা হলো:
+  </p>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">ফোল্ডার / ফাইল</th>
+        <th style="width: 25%;">লেয়ারের নাম</th>
+        <th style="width: 50%;">মূল কাজ ও সংযোগ</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>app/main.py</code></td>
+        <td>Application Entrypoint</td>
+        <td>FastAPI অ্যাপ তৈরি করে, ডাটাবেস পিং করে, টেবিল অটো-ক্রিয়েট করে, CORS ও স্ট্যাটিক ফাইল মাউন্ট করে এবং মাস্টার রাউটার যুক্ত করে।</td>
+      </tr>
+      <tr>
+        <td><code>app/api/</code></td>
+        <td>Controller / Router Layer</td>
+        <td>HTTP রিকোয়েস্ট রিসিভ করে, লজিক রান করে এবং JSON রেসপন্স পাঠায়। (auth, products, customers, orders, inventory, dashboard).</td>
+      </tr>
+      <tr>
+        <td><code>app/core/database.py</code></td>
+        <td>Database Engine & Session</td>
+        <td>PostgreSQL এর সাথে Async Engine তৈরি করে এবং <code>get_db</code> ডিপেন্ডেন্সির মাধ্যমে প্রতিটি রিকোয়েস্টে সেশন প্রদান করে।</td>
+      </tr>
+      <tr>
+        <td><code>app/core/security.py</code></td>
+        <td>Security & JWT Helper</td>
+        <td>পাসওয়ার্ড হ্যাশিং (bcrypt) এবং JWT অ্যাক্সেস টোকেন এনকোড/ডিকোড করে।</td>
+      </tr>
+      <tr>
+        <td><code>app/core/deps.py</code></td>
+        <td>Dependency Injection</td>
+        <td><code>get_current_user</code> ডিপেন্ডেন্সি; এটি ব্রাউজারের HttpOnly কুকি থেকে টোকেন চেক করে ব্যবহারকারীকে শনাক্ত করে।</td>
+      </tr>
+      <tr>
+        <td><code>app/models/</code></td>
+        <td>SQLAlchemy ORM Models</td>
+        <td>PostgreSQL এর টেবিল স্কিমা ক্লাস হিসেবে সংজ্ঞায়িত (User, Product, Customer, Order, OrderItem, StockMovement)।</td>
+      </tr>
+      <tr>
+        <td><code>app/schemas/</code></td>
+        <td>Pydantic Data Validation</td>
+        <td>ক্লায়েন্ট থেকে আসা ডেটার ভ্যালিডেশন এবং রেসপন্স সিরিয়ালাইজেশনের ডেটা মডেল।</td>
+      </tr>
+      <tr>
+        <td><code>app/templates/</code></td>
+        <td>Frontend HTML (Jinja2)</td>
+        <td>ইউজারের ড্যাশবোর্ড, টেবিল স্ট্রাকচার, সাইডবার ও মডালসমূহ।</td>
+      </tr>
+      <tr>
+        <td><code>app/static/js/app.js</code></td>
+        <td>Client-Side Vanilla JS</td>
+        <td>ব্রাউজার থেকে API তে <code>fetch()</code> রিকোয়েস্ট পাঠিয়ে ড্যাশবোর্ডের ডেটা ডায়নামিকালি রেন্ডার করে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">৪.২ একটি রিকোয়েস্টের সম্পূর্ণ জীবনচক্র (Request Lifecycle Trace)</h2>
+  <p>
+    ধরা যাক ইউজার একটি পণ্য যুক্ত করতে "Save Product" বাটনে চাপ দিল। পুরো সিস্টেমে তখন যা ঘটে:
+  </p>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">১</span> ফ্রন্টএন্ড অ্যাকশন (app/static/js/app.js)</div>
+    ইউজার ফর্ম পূরণ করে সাবমিট দিলে জাভাস্ক্রিপ্ট ফর্মের ডেটা সংগ্রহ করে:
+    <code>fetch('/api/products', { method: 'POST', body: JSON.stringify({...}) })</code>
+  </div>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">২</span> রাউট ম্যাচিং (app/main.py -> app/api/products.py)</div>
+    FastAPI রিকোয়েস্টটি ধরে <code>app/api/products.py</code> ফাইলের <code>@router.post("")</code> ফাংশনে পাঠায়।
+  </div>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৩</span> সিকিউরিটি ও ডিপেন্ডেন্সি চেক (app/core/deps.py)</div>
+    <code>current_user: User = Depends(get_current_user)</code> এক্সিকিউট হয়। ব্রাউজারের কুকি থেকে JWT টোকেন ডিকোড করে নিশ্চিত হয় যে রিকোয়েস্টকারী একজন ভ্যালিড ইউজার।
+  </div>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৪</span> ডেটা ভ্যালিডেশন (app/schemas/product.py)</div>
+    <code>product_in: ProductCreate</code> কার্যকর হয়। নাম ২ অক্ষরের বড় কি না, দাম পজিটিভ কি না এবং SKU ইউনিক কি না তা Pydantic দিয়ে ভ্যালিডেট হয়।
+  </div>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৫</span> ডাটাবেসে সেভ (app/models/product.py & app/core/database.py)</div>
+    SQLAlchemy ORM মডেল দিয়ে <code>db.add(new_product)</code> এবং <code>await db.commit()</code> এক্সিকিউট করে PostgreSQL টেবিলে ডাটা পার্মানেন্টলি রাইট হয়।
+  </div>
+
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৬</span> JSON রেসপন্স ও DOM আপডেট (app.js)</div>
+    সার্ভার স্ট্যাটাস কোড <strong>201 Created</strong> সহ নতুন তৈরি পণ্যের JSON পাঠায়। ব্রাউজারের জাভাস্ক্রিপ্ট সেই রেসপন্স পেয়ে মডাল বন্ধ করে দেয় এবং টেবিল রিলোড না করেই পণ্যের সারি যুক্ত করে দেয়।
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 6: MODULE 5 - EXHAUSTIVE API ENDPOINTS REFERENCE        -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৫: আমাদের প্রজেক্টের সমস্ত এপিআই এন্ডপয়েন্ট ডিকশনারি</h1>
+
+  <h2 class="sub-title">৫.১ Authentication APIs (<code>app/api/auth.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Input (প্যারামিটার/বডি)</th>
+        <th>Output / Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/auth/register</code></td>
+        <td>প্রথমবার প্রথম অ্যাডমিন অ্যাকাউন্ট তৈরি (এরপর রেজিস্ট্রেশন লক হয়ে যায়)</td>
+        <td><code>UserRegister</code> (full_name, email, password, confirm_password)</td>
+        <td><code>201 Created</code> (User object)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/auth/login</code></td>
+        <td>ইমেইল ও পাসওয়ার্ড ভেরিফাই করে HttpOnly JWT কুকি সেট করে</td>
+        <td><code>UserLogin</code> (email, password)</td>
+        <td><code>200 OK</code> + <code>Set-Cookie: access_token=...</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/auth/logout</code></td>
+        <td>ইউজারের কুকি মুছে দিয়ে লগআউট করায়</td>
+        <td>None</td>
+        <td><code>200 OK</code> + Cookie clear</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/auth/me</code></td>
+        <td>বর্তমান লগইন থাকা ইউজারের প্রোফাইল তথ্য দেয়</td>
+        <td>None (Requires Auth Cookie)</td>
+        <td><code>200 OK</code> (User info)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/auth/status</code></td>
+        <td>অ্যাডমিন অ্যাকাউন্ট আছে কি না চেক করে (/register পেজ লকের জন্য)</td>
+        <td>None (Public)</td>
+        <td><code>200 OK</code> (<code>{"has_admin": true/false}</code>)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">৫.২ Product Management APIs (<code>app/api/products.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Input</th>
+        <th>Output / Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/products</code></td>
+        <td>প্রোডাক্টের তালিকা, পেজিনেশন, সার্চ ও ক্যাটাগরি ফিল্টার</td>
+        <td><code>?page=1&page_size=20&search=...&category=...</code></td>
+        <td><code>200 OK</code> (items list, total, categories)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/products</code></td>
+        <td>নতুন পণ্য যোগ করা (SKU ইউনিকনেস ও পজিটিভ ভ্যালু চেক)</td>
+        <td><code>ProductCreate</code> JSON Body</td>
+        <td><code>201 Created</code> (New Product)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/products/{id}</code></td>
+        <td>নির্দিষ্ট পণ্যের বিস্তারিত তথ্য ফেচ করা</td>
+        <td>Path: <code>id</code> (int)</td>
+        <td><code>200 OK</code> / <code>404 Not Found</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-put">PUT</span> <code>/api/products/{id}</code></td>
+        <td>পণ্যের তথ্য আপডেট করা</td>
+        <td>Path: <code>id</code>, Body: <code>ProductUpdate</code></td>
+        <td><code>200 OK</code> (Updated Product)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-delete">DELETE</span> <code>/api/products/{id}</code></td>
+        <td>পণ্য সফট-ডিলিট করা (যদি কোনো অর্ডারে থাকে তবে ব্লক করে)</td>
+        <td>Path: <code>id</code></td>
+        <td><code>200 OK</code> (Success message)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">৫.৩ Customer Management APIs (<code>app/api/customers.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Input</th>
+        <th>Output / Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/customers</code></td>
+        <td>কাস্টমারদের তালিকা ও মোট অর্ডার সংখ্যা প্রদর্শন</td>
+        <td><code>?page=1&page_size=20&search=...</code></td>
+        <td><code>200 OK</code> (Customer list with orders_count)</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/customers</code></td>
+        <td>নতুন কাস্টমার নিবন্ধন</td>
+        <td><code>CustomerCreate</code> (name, phone, email, address)</td>
+        <td><code>201 Created</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-put">PUT</span> <code>/api/customers/{id}</code></td>
+        <td>কাস্টমার প্রোফাইল আপডেট</td>
+        <td>Path: <code>id</code>, Body: <code>CustomerUpdate</code></td>
+        <td><code>200 OK</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-delete">DELETE</span> <code>/api/customers/{id}</code></td>
+        <td>কাস্টমার ডিলিট (সফট-ডিলিট)</td>
+        <td>Path: <code>id</code></td>
+        <td><code>200 OK</code></td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/customers/{id}/orders</code></td>
+        <td>নির্দিষ্ট কাস্টমারের অতীতের সব অর্ডারের হিস্টোরি দেখা</td>
+        <td>Path: <code>id</code></td>
+        <td><code>200 OK</code> (Order history list)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 7: MODULE 5 (CONTINUED) - ORDERS & INVENTORY            -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৫ (চলমান): Orders, Inventory ও Dashboard APIs</h1>
+
+  <h2 class="sub-title">৫.৪ Order Management APIs (<code>app/api/orders.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Business Logic & Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/orders</code></td>
+        <td>অর্ডার তালিকা দেখা, স্ট্যাটাস ও পেমেন্ট ফিল্টারিং</td>
+        <td><code>?page=1&page_size=15&status=...&payment=...</code> সাপোর্ট করে।</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/orders</code></td>
+        <td>নতুন মাল্টি-আইটেম সেলস অর্ডার তৈরি</td>
+        <td><strong>অটো-স্টক ডিডাকশন:</strong> প্রতিটি আইটেমের জন্য স্টক যাচাই করে, অর্ডার তৈরি করে, পণ্যের স্টক থেকে কোয়ান্টিটি কমিয়ে দেয় এবং অডিট ট্রেইলে <code>OUT</code> মুভমেন্ট লগ তৈরি করে।</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-patch">PATCH</span> <code>/api/orders/{id}/status</code></td>
+        <td>অর্ডারের স্ট্যাটাস বা পেমেন্ট পরিবর্তন</td>
+        <td><strong>অটো-স্টক রেস্টোরেশন:</strong> কোনো অর্ডার <code>Cancelled</code> করা হলে পণ্যের স্টক ফিরিয়ে দেওয়া হয় এবং <code>IN</code> মুভমেন্ট লগ তৈরি হয়।</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/orders/{id}/invoice</code></td>
+        <td>অফিসিয়াল কমার্শিয়াল ইনভয়েস ডেটা ফেচ</td>
+        <td>ইনভয়েস নম্বর, ক্রেতার তথ্য, আইটেমভিত্তিক ব্রেকডাউন ও মোট টাকার ফরম্যাটেড ডেটা প্রদান করে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">৫.৫ Inventory & Stock Movements (<code>app/api/inventory.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Business Logic & Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/inventory/movements</code></td>
+        <td>স্টক মুভমেন্টের অডিট ট্রেইল দেখা</td>
+        <td>কে কোন তারিখে কোন পণ্যের কত স্টক পরিবর্তন করেছে, তার পূর্ণ হিস্টোরি (টাইপ, পরিমাণ, আগের স্টক, বর্তমান স্টক, নোট)।</td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-post">POST</span> <code>/api/inventory/movement</code></td>
+        <td>ম্যানুয়াল স্টক ইন, আউট বা অ্যাডজাস্টমেন্ট</td>
+        <td><strong>ট্রানজ্যাকশন সেফ:</strong> <code>IN</code> হলে স্টক বাড়ে, <code>OUT</code> হলে স্টক কমে, <code>ADJUSTMENT</code> হলে সঠিক স্টক সেট হয়ে ডেটাবেসে পার্মানেন্টলি লগ থাকে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="sub-title">৫.৬ Dashboard & Analytics APIs (<code>app/api/dashboard.py</code>)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method & Route</th>
+        <th>Purpose (কাজ)</th>
+        <th>Business Logic & Impact</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/dashboard/stats</code></td>
+        <td>ড্যাশবোর্ডের ওভারভিউ কার্ড ও ৭ দিনের চার্ট ডেটা</td>
+        <td>
+          ১. মোট সক্রিয় পণ্য সংখ্যা<br>
+          ২. মোট নিবন্ধিত কাস্টমার সংখ্যা<br>
+          ৩. মোট অর্ডার সংখ্যা<br>
+          <strong>৪. Total Revenue:</strong> শুধুমাত্র যেসব অর্ডারের <code>order_status == 'Delivered'</code> এবং <code>payment_status == 'Paid'</code>, তাদের টাকার যোগফল!<br>
+          ৫. Low Stock পণ্যের সংখ্যা (সাইডবার ব্যাজের জন্য)<br>
+          ৬. বিগত ৭ দিনের ডেলিভার্ড সেলস চার্ট ডেটা।
+        </td>
+      </tr>
+      <tr>
+        <td><span class="badge badge-get">GET</span> <code>/api/dashboard/low-stock</code></td>
+        <td>কম স্টকের পণ্যের তালিকা</td>
+        <td>যেসব পণ্যের <code>stock_quantity <= reorder_level</code>, সেগুলোকে সবচেয়ে কম স্টক থেকে ক্রমানুসারে সাজিয়ে রিটার্ন করে।</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 8: MODULE 6 - STEP-BY-STEP PRACTICAL SCENARIOS          -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৬: প্রেজেন্টেশনে বোঝানোর জন্য বাস্তব সিনারিও</h1>
+
+  <h2 class="sub-title">সিনারিও ১: সিকিউর লগইন এবং HttpOnly JWT কুকি ফ্লো</h2>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">১</span> ইউজার ইনপুট ও সাবমিট</div>
+    ইউজার <code>/login</code> পেজে ইমেইল ও পাসওয়ার্ড লিখে সাবমিট দিলে <code>POST /api/auth/login</code> এ রিকোয়েস্ট যায়।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">২</span> পাসওয়ার্ড ভেরিফিকেশন (Bcrypt)</div>
+    <code>app/core/security.py</code> ডেটাবেসের হ্যাশড পাসওয়ার্ডের সাথে ইউজারের পাসওয়ার্ড মিলিয়ে দেখে।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৩</span> JWT টোকেন তৈরি ও HttpOnly কুকি সেট</div>
+    পাসওয়ার্ড সঠিক হলে <code>create_access_token()</code> ফাংশন দিয়ে সাইন করা JWT তৈরি হয় এবং <code>response.set_cookie(key="access_token", httponly=True, samesite="lax")</code> রেসপন্সে পাঠানো হয়।
+  </div>
+  <div class="callout callout-warning">
+    <strong>🔒 কেন HttpOnly Cookie?</strong> সাধারণ <code>localStorage</code> এ টোকেন রাখলে ব্রাউজারের কোনো ক্ষতিকর জাভাস্ক্রিপ্ট (XSS অ্যাটাক) টোকেন চুরি করতে পারে। কিন্তু <code>HttpOnly</code> কুকিকে জাভাস্ক্রিপ্ট কখনোই পড়তে পারে না, ফলে অ্যাপ অত্যন্ত সুরক্ষিত থাকে!
+  </div>
+
+  <h2 class="sub-title">সিনারিও ২: সেলস অর্ডার তৈরি ও স্বয়ংক্রিয় স্টক হ্রাস (ACID Transaction)</h2>
+  <p>
+    যখন কোনো কাস্টমার অর্ডার দেয় (যেমন ৩টি কীবোর্ড), তখন ডেটাবেস ইনকনসিস্টেন্সি যেন কখনো না হয় সেজন্য এটি একটি <strong>Atomic Transaction</strong> এ ঘটে:
+  </p>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">১</span> স্টক যাচাই (Stock Availability Check)</div>
+    যদি প্রোডাক্টের বর্তমান স্টক ৩টির কম থাকে, তাহলে সাথে সাথে <code>400 Bad Request</code> পাঠায়: <em>"Insufficient stock for Keychron K2. Available: 2, Requested: 3"</em>।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">২</span> স্টক কর্তন (Stock Deduction)</div>
+    স্টক পর্যাপ্ত থাকলে পণ্যটির স্টক ৩ ইউনিট কমিয়ে দেওয়া হয়: <code>product.stock_quantity -= 3</code>।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৩</span> অডিট ট্রেইল তৈরি (Stock Movement Audit)</div>
+    <code>StockMovement</code> টেবিলে একটি <code>OUT</code> রেকর্ড তৈরি হয়: কে অর্ডার করেছে, আগের স্টক কত ছিল, বর্তমান স্টক কত।
+  </div>
+  <div class="step-card">
+    <div class="step-header"><span class="step-num">৪</span> কমিট (Database Commit)</div>
+    সবগুলো অপারেশন সফল হলে একসাথে <code>await db.commit()</code> হয়। কোনো একটি স্টেপে ভুল হলে স্বয়ংক্রিয়ভাবে রোলব্যাক হয়, ফলে ভুল ডেটা সেভ হতে পারে না।
+  </div>
+
+  <h2 class="sub-title">সিনারিও ৩: অর্ডার বাতিল হলে স্টক ফেরত আসা (Order Cancellation Refund)</h2>
+  <p>
+    কোনো কারণে গ্রাহক অর্ডার বাতিল করলে ড্যাশবোর্ডে স্ট্যাটাস <code>Cancelled</code> সেট করা হয়। ব্যাকএন্ডে <code>app/api/orders.py</code> স্বয়ংক্রিয়ভাবে শনাক্ত করে যে অর্ডারটি পূর্বে ক্যান্সেলড ছিল না, তাই অর্ডারে থাকা সমস্ত পণ্যের স্টক ফেরত দিয়ে দেয় এবং অডিট লগে <code>IN</code> মুভমেন্ট রেকর্ড করে।
+  </p>
+
+  <h2 class="sub-title">সিনারিও ৪: শর্তসাপেক্ষ রেভিনিউ গণনা (Delivered & Paid Logic)</h2>
+  <p>
+    আমাদের অ্যাপে যেকোনো পেন্ডিং বা ক্যান্সেলড অর্ডারের টাকা রেভিনিউ কার্ডে যোগ হয় না। <code>app/api/dashboard.py</code> তে এক্সক্লুসিভ কুয়েরি চালানো হয়:
+  </p>
+  <pre>sales_res = await db.execute(
+    select(func.sum(Order.total_amount)).where(
+        Order.order_status == "Delivered",
+        Order.payment_status == "Paid",
+    )
+)</pre>
+  <p>
+    এর ফলে একজন দোকানদার শুধুমাত্র তার হাতে আসা নিশ্চিত নগদ লাভ ও আসল বিক্রয় দেখতে পান।
+  </p>
+
+  <div class="page-break"></div>
+
+  <!-- ===================================================================== -->
+  <!-- SLIDE / PAGE 9: MODULE 7 - PRESENTATION / VIVA Q&A                  -->
+  <!-- ===================================================================== -->
+  <h1 class="sec-title">মডিউল ৭: ভাইভা / প্রেজেন্টেশন প্রশ্নোত্তর প্রস্তুতি (Top 10 Q&A)</h1>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ১: RESTful API কী এবং এর বৈশিষ্ট্য কী?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> REST (Representational State Transfer) হলো ওয়েব এপিআই ডিজাইনের একটি স্ট্যান্ডার্ড আর্কিটেকচারাল স্টাইল। এর প্রধান বৈশিষ্ট্য হলো এটি Stateless (প্রতিটি রিকোয়েস্ট স্বয়ংসম্পূর্ণ), ক্লায়েন্ট ও সার্ভারকে আলাদা রাখে, স্ট্যান্ডার্ড HTTP Verbs (GET, POST, PUT, DELETE) ব্যবহার করে এবং সাধারণত JSON ফরম্যাটে ডেটা আদান-প্রদান করে।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ২: FastAPI কেন অন্যান্য ফ্রেমওয়ার্ক (যেমন Flask বা Django) থেকে আলাদা বা দ্রুত?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> FastAPI তৈরি হয়েছে আধুনিক Python 3.10+ এর টাইপ হিন্টস এবং Starlette ও Pydantic এর উপর। এটি সম্পূর্ণ Asynchronous (async/await), যার ফলে নোডজেএস বা গো (Go) ল্যাঙ্গুয়েজের মতো উচ্চ পারফরম্যান্স দেয়। এছাড়াও এটি কোড দেখেই নিজে নিজে Swagger UI ডকুমেন্টেশন তৈরি করে ফেলে।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৩: Pydantic স্কিমা এবং SQLAlchemy মডেলের মধ্যে পার্থক্য কী?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> SQLAlchemy Model ডেটাবেস টেবিলের গঠন নির্ধারণ করে (যেমন কোন কলাম Foreign Key, কলাম টাইপ ইত্যাদি)। আর Pydantic Schema নেটওয়ার্কের মাধ্যমে ক্লায়েন্ট ও সার্ভারের মধ্যে আদান-প্রদান হওয়া ডেটা যাচাই (Validate) ও রূপান্তর করে। যেমন ইউজারের পাসওয়ার্ড ডেটাবেসে থাকে কিন্তু রেসপন্স স্কিমায় পাসওয়ার্ড ফিল্ড বাদ দিয়ে পাঠানো হয়।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৪: আপনার প্রজেক্টে ডেটাবেস কানেকশন কিভাবে হ্যান্ডেল করা হয়েছে?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> আমরা SQLAlchemy 2.0 এর <code>AsyncEngine</code> এবং <code>asyncpg</code> ড্রাইভার ব্যবহার করেছি। <code>get_db()</code> নামক একটি অ্যাসিনক্রোনাস জেনারেটরের মাধ্যমে Dependency Injection ব্যবহার করে প্রতিটি রিকোয়েস্টে একটি নিরাপদ সেশন ওপেন হয় এবং রিকোয়েস্ট শেষ হলে স্বয়ংক্রিয়ভাবে সেশন ক্লোজ হয়।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৫: PUT এবং PATCH এর মধ্যে পার্থক্য কী? আপনার প্রজেক্টে কোথায় কোনটি ব্যবহৃত হয়েছে?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> <code>PUT</code> পুরো রেকর্ডকে সম্পূর্ণ নতুন ডেটা দিয়ে প্রতিস্থাপন করে (যেমন <code>PUT /api/products/{id}</code> পুরো পণ্যের নাম, দাম, স্টক একসাথে আপডেট করে)। আর <code>PATCH</code> শুধুমাত্র নির্দিষ্ট কিছু ফিল্ড আংশিক আপডেট করে (যেমন <code>PATCH /api/orders/{id}/status</code> শুধুমাত্র অর্ডারের স্ট্যাটাস পরিবর্তন করে)।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৬: ডিপেন্ডেন্সি ইনজেকশন (Dependency Injection) কী?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> ডিপেন্ডেন্সি ইনজেকশন হলো এমন একটি টেকনিক যেখানে একটি ফাংশন তার প্রয়োজনীয় ডিপেন্ডেন্সি নিজে তৈরি না করে বাইরে থেকে প্যারামিটার হিসেবে গ্রহণ করে। যেমন FastAPI তে <code>db: AsyncSession = Depends(get_db)</code> এবং <code>current_user: User = Depends(get_current_user)</code> লিখে আমরা ডাটাবেস সেশন ও অথেন্টিকেশন ম্যানেজ করেছি।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৭: আপনার অ্যাপে Low Stock মনিটরিং কিভাবে কাজ করে?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> প্রতিটি পণ্যের একটি <code>reorder_level</code> নির্ধারিত থাকে। ডেটাবেস কুয়েরির মাধ্যমে যেসব পণ্যের <code>stock_quantity <= reorder_level</code>, সেগুলোকে আলাদা করে সাইডবারে লাইভ ব্যাজ কাউন্ট দেখানো হয় এবং কম স্টকের তালিকায় সতর্কবার্তা প্রদর্শন করা হয়।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৮: JWT টোকেন কিভাবে কাজ করে?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> JWT (JSON Web Token) ৩টি অংশ নিয়ে গঠিত—Header, Payload এবং Signature। ইউজার লগইন করলে সার্ভার ইউজারের আইডি ও এক্সপায়ারি টাইম দিয়ে একটি গোপন কি (Secret Key) দ্বারা সাইন করা টোকেন প্রদান করে। পরবর্তী প্রতিটি রিকোয়েস্টে এই সিগনেচার যাচাই করে সার্ভার বুঝতে পারে ইউজার আসল কি না।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ৯: ইনভয়েস প্রিন্ট করার সময় ডেটা কিভাবে তৈরি হয়?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> যখন ইউজার "Invoice" বাটনে ক্লিক করে, <code>GET /api/orders/{id}/invoice</code> এপিআই থেকে সংশ্লিষ্ট অর্ডারের সম্পূর্ণ বিবরণী JSON আকারে আসে। প্রিন্ট করার সময় একটি আইসোলেটেড প্রিন্ট ইঞ্জিন চালু হয়ে পরিচ্ছন্ন A4 পেপারে হাই-কন্ট্রাস্ট কমার্শিয়াল ইনভয়েস তৈরি করে।</div>
+  </div>
+
+  <div class="qa-box">
+    <div class="qa-question">প্রশ্ন ১০: প্রজেক্টে কনকারেন্ট অর্ডারিং বা ডেটা অসামঞ্জস্য রোধ করার উপায় কী?</div>
+    <div class="qa-answer"><strong>উত্তর:</strong> আমরা ডেটাবেস ট্রানজ্যাকশন ব্যবহার করেছি। একাধিক ইউজার একসাথে অর্ডার করলেও স্টক ডিডাকশন এবং অর্ডার আইটেম তৈরি同一个 ট্রানজ্যাকশনে থাকে, ফলে কখনোই স্টকের বেশি পণ্য বিক্রি হওয়া বা আংশিক ডেটা সেভ হওয়া সম্ভব নয়।</div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In · {{ app_name }}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+
+    <!-- Brand Logo & Header -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-indigoDark to-brand-cyan shadow-xl shadow-indigo-500/20 mb-4 ring-1 ring-white/10">
+        <i data-lucide="store" class="w-8 h-8 text-white"></i>
+      </div>
+      <h1 class="text-2xl font-extrabold text-white tracking-tight">{{ app_name }}</h1>
+      <p class="text-sm text-slate-400 mt-1">Sign in to your administration panel</p>
+    </div>
+
+    <!-- Login Card -->
+    <div class="glass-panel rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+      <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-brand-cyan via-brand-indigo to-brand-purpleAura"></div>
+
+      <div class="mb-6">
+        <h2 class="text-xl font-bold text-white">Welcome Back</h2>
+        <p class="text-xs text-slate-400 mt-1">Enter your credentials to access the shop dashboard</p>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div id="loginError" class="p-3 rounded-xl bg-brand-danger/10 border border-brand-danger/30 text-rose-300 text-xs hidden flex items-start gap-2">
+          <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+          <span id="loginErrorMsg"></span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5" for="email">Email Address</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i data-lucide="mail" class="w-4 h-4"></i>
+            </span>
+            <input type="email" id="email" required placeholder="admin@shop.com"
+                   class="w-full pl-10 pr-4 py-2.5 bg-brand-cardSub border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-medium text-slate-300 mb-1.5" for="password">Password</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <i data-lucide="lock" class="w-4 h-4"></i>
+            </span>
+            <input type="password" id="password" required placeholder="••••••••"
+                   class="w-full pl-10 pr-4 py-2.5 bg-brand-cardSub border border-brand-border rounded-xl text-sm text-white placeholder-slate-500 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-colors">
+          </div>
+        </div>
+
+        <button type="submit" id="loginBtn"
+                class="w-full mt-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-brand-indigo to-brand-indigoDark hover:from-indigo-500 hover:to-indigo-700 shadow-lg shadow-indigo-600/30 transition-all duration-200 flex items-center justify-center gap-2">
+          <span>Sign In to Dashboard</span>
+          <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- Security Footnote -->
+    <div class="mt-6 text-center text-xs text-slate-500 flex items-center justify-center gap-2">
+      <i data-lucide="shield-check" class="w-3.5 h-3.5 text-brand-cyan"></i>
+      <span>Secure JWT Cookie Session · 256-bit Encryption</span>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const form = document.getElementById("loginForm");
+  const errorBox = document.getElementById("loginError");
+  const errorMsg = document.getElementById("loginErrorMsg");
+  const loginBtn = document.getElementById("loginBtn");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    errorBox.classList.add("hidden");
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+
+    loginBtn.disabled = true;
+    loginBtn.classList.add("opacity-70", "cursor-not-allowed");
+    loginBtn.innerHTML = `<span>Verifying credentials...</span>`;
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Invalid email or password.");
+      }
+
+      window.showToast("Signed in successfully! Redirecting to dashboard...", "success");
+      setTimeout(() => {
+        window.location.href = "/dashboard";
+      }, 600);
+    } catch (err) {
+      errorMsg.textContent = err.message;
+      errorBox.classList.remove("hidden");
+      loginBtn.disabled = false;
+      loginBtn.classList.remove("opacity-70", "cursor-not-allowed");
+      loginBtn.innerHTML = `<span>Sign In to Dashboard</span><i data-lucide="arrow-right" class="w-4 h-4"></i>`;
+      lucide.createIcons();
+    }
+  });
+</script>
+{% endblock %}

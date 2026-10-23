@@ -1,0 +1,129 @@
+<!-- AI Assistant Floating Trigger Button (FAB) -->
+<div id="aiFabContainer" class="fixed bottom-6 right-6 z-40 flex items-center gap-3">
+  <!-- Helper Tooltip Badge -->
+  <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-card/90 border border-brand-cyan/30 text-xs text-brand-cyan font-medium shadow-lg backdrop-blur-md animate-pulse">
+    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+    <span>AI Assistant</span>
+  </div>
+
+  <button id="aiOpenDrawerBtn" title="Open AI Assistant (Voice & Text)" class="relative w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-indigoDark via-brand-indigo to-brand-cyan text-white shadow-xl shadow-cyan-500/25 flex items-center justify-center hover:scale-105 hover:shadow-cyan-500/40 active:scale-95 transition-all group ring-2 ring-white/20">
+    <i data-lucide="bot" class="w-7 h-7 group-hover:rotate-6 transition-transform"></i>
+    <span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-brand-bg shadow-sm"></span>
+  </button>
+</div>
+
+<!-- AI Assistant Slide-Out Drawer -->
+<div id="aiDrawerBackdrop" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden transition-opacity duration-300"></div>
+
+<aside id="aiAssistantDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-[460px] bg-brand-card/95 border-l border-brand-border flex flex-col backdrop-blur-xl shadow-2xl transition-transform duration-300 translate-x-full">
+  
+  <!-- Drawer Header -->
+  <div class="p-4 border-b border-brand-border flex items-center justify-between bg-brand-cardSub/50">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-indigoDark to-brand-cyan flex items-center justify-center text-white shadow-md shadow-cyan-500/20 ring-1 ring-white/10">
+        <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-bold text-sm text-white">ShopManage AI</span>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Active</span>
+        </div>
+        <p class="text-[11px] text-slate-400">Voice &amp; Text &bull; English &amp; বাংলা</p>
+      </div>
+    </div>
+    
+    <div class="flex items-center gap-1.5">
+      <button id="aiClearHistoryBtn" title="Clear conversation history" class="p-2 rounded-xl text-slate-400 hover:text-rose-400 hover:bg-brand-cardSub border border-transparent hover:border-brand-border transition-all">
+        <i data-lucide="trash-2" class="w-4 h-4"></i>
+      </button>
+      <button id="aiCloseDrawerBtn" title="Close Assistant" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-brand-cardSub border border-transparent hover:border-brand-border transition-all">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quick Action Chips -->
+  <div class="px-4 py-2.5 bg-brand-card border-b border-brand-border/60 flex items-center gap-2 overflow-x-auto text-xs no-scrollbar">
+    <button onclick="aiQuickPrompt('Show dashboard sales and statistics')" class="flex-shrink-0 px-3 py-1 rounded-full bg-brand-cardSub text-slate-300 hover:text-brand-cyan hover:border-brand-cyan/40 border border-brand-border transition-all">
+      📊 Today's Sales
+    </button>
+    <button onclick="aiQuickPrompt('Which products are low on stock?')" class="flex-shrink-0 px-3 py-1 rounded-full bg-brand-cardSub text-slate-300 hover:text-amber-400 hover:border-amber-400/40 border border-brand-border transition-all">
+      ⚠️ Low Stock
+    </button>
+    <button onclick="aiQuickPrompt('Search active customers')" class="flex-shrink-0 px-3 py-1 rounded-full bg-brand-cardSub text-slate-300 hover:text-brand-cyan hover:border-brand-cyan/40 border border-brand-border transition-all">
+      👥 Customers
+    </button>
+    <button onclick="aiQuickPrompt('List recent inventory movements')" class="flex-shrink-0 px-3 py-1 rounded-full bg-brand-cardSub text-slate-300 hover:text-brand-cyan hover:border-brand-cyan/40 border border-brand-border transition-all">
+      📦 Inventory Log
+    </button>
+  </div>
+
+  <!-- Chat Log (Messages) -->
+  <div id="aiChatLog" class="flex-1 overflow-y-auto p-4 space-y-4 text-sm font-sans">
+    <!-- Welcome Greeting Card -->
+    <div class="ai-msg-assistant flex gap-3">
+      <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-indigo to-brand-cyan flex items-center justify-center text-white flex-shrink-0 shadow-md">
+        <i data-lucide="bot" class="w-4 h-4"></i>
+      </div>
+      <div class="flex-1 bg-brand-cardSub/80 border border-brand-border/80 rounded-2xl p-4 shadow-sm text-slate-200">
+        <div class="font-semibold text-white mb-1 flex items-center gap-2">
+          <span>Welcome to ShopManage AI</span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed mb-3">
+          I can perform stock checks, search clients, query revenue analytics, or prepare orders. You may type or use the microphone in <strong>English, Bengali, or Banglish</strong>.
+        </p>
+        <div class="text-[11px] text-slate-400 bg-brand-card/70 border border-brand-border/50 rounded-xl p-2.5 space-y-1">
+          <div><strong class="text-brand-cyan">Examples:</strong></div>
+          <div>&bull; <em>"আজকের মোট বিক্রি কত?"</em> (Total sales)</div>
+          <div>&bull; <em>"Check stock of mouse"</em></div>
+          <div>&bull; <em>"Add customer Rahim phone 01711223344"</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice Status / Listening Banner -->
+  <div id="aiVoiceListeningBanner" class="hidden px-4 py-2 bg-gradient-to-r from-rose-950/70 to-indigo-950/70 border-t border-rose-500/40 flex items-center justify-between text-xs text-rose-300 animate-pulse">
+    <div class="flex items-center gap-2">
+      <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"></span>
+      <span id="aiVoiceStatusText">Listening to speech (Bengali / English)...</span>
+    </div>
+    <button id="aiStopVoiceBtn" class="text-rose-400 hover:text-white font-bold text-xs uppercase px-2 py-0.5 rounded bg-rose-900/50">Stop</button>
+  </div>
+
+  <!-- Input Bar -->
+  <div class="p-3.5 border-t border-brand-border bg-brand-cardSub/60">
+    <form id="aiChatForm" class="flex items-center gap-2" onsubmit="return false;">
+      
+      <!-- Voice Toggle Button (Microphone) -->
+      <button type="button" id="aiVoiceToggleBtn" title="Speak via Microphone (Bengali or English)" class="w-10 h-10 rounded-xl bg-brand-card border border-brand-border hover:border-brand-cyan text-slate-300 hover:text-brand-cyan flex items-center justify-center transition-all flex-shrink-0 active:scale-95">
+        <i data-lucide="mic" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Text Input -->
+      <div class="flex-1 relative">
+        <input 
+          type="text" 
+          id="aiTextInput" 
+          placeholder="Ask or command in English or বাংলা..." 
+          autocomplete="off"
+          class="w-full bg-brand-card border border-brand-border rounded-xl px-4 py-2.5 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-brand-cyan focus:ring-1 focus:ring-brand-cyan transition-all"
+        />
+      </div>
+
+      <!-- Send Button -->
+      <button type="submit" id="aiSendBtn" title="Send message" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-indigoDark to-brand-cyan text-white flex items-center justify-center hover:opacity-90 active:scale-95 transition-all shadow-md shadow-cyan-500/20 flex-shrink-0 disabled:opacity-50">
+        <i data-lucide="send" class="w-4 h-4"></i>
+      </button>
+    </form>
+    
+    <div class="flex items-center justify-between text-[10px] text-slate-400 px-1 mt-2">
+      <span class="flex items-center gap-1.5">
+        <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
+        <span>Mutations require confirmation</span>
+      </span>
+      <span id="aiLangIndicator" class="font-mono text-slate-400">Speech: bn-BD / en-US</span>
+    </div>
+  </div>
+
+</aside>
