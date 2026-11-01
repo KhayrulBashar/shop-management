@@ -153,6 +153,14 @@ class GeminiProvider(AIProvider):
                     tool_calls=tool_calls,
                     provider_name=f"gemini ({self.model_name})",
                 )
+        except (httpx.TimeoutException, httpx.NetworkError) as exc:
+            GeminiProvider._cooldown_until = datetime.now(timezone.utc) + timedelta(seconds=60)
+            logger.warning(f"Gemini API timeout or network error: {exc}. Activated 60s cooldown.")
+            return AIProviderResponse(
+                provider_name="gemini",
+                error=f"Gemini timeout/network error: {exc}",
+                is_fallback=True,
+            )
         except Exception as exc:
             logger.error(f"Gemini API call failed: {exc}", exc_info=True)
             return AIProviderResponse(

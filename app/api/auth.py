@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -83,13 +84,52 @@ async def register_first_admin(
     return admin_user
 
 
+@router.post("/token")
+async def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    response: Response = None,
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    OAuth2 compatible token login endpoint for Swagger UI (/docs) and external API clients.
+    Accepts form-encoded 'username' (your admin email) and 'password'.
+    """
+    email_clean = form_data.username.lower().strip()
+    stmt = select(User).where(User.email == email_clean)
+    res = await db.execute(stmt)
+    user = res.scalar_one_or_none()
+
+    if not user or not verify_password(form_data.password, user.hashed_password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    token = create_access_token(subject=user.id)
+    if response:
+        response.set_cookie(
+            key="access_token",
+            value=f"Bearer {token}",
+            httponly=True,
+            max_age=86400 * 30,
+            samesite="lax",
+            secure=False,
+        )
+
+    return {
+        "access_token": token,
+        "token_type": "bearer",
+    }
+
+
 @router.post("/login")
 async def login(
     payload: UserLogin,
     response: Response,
     db: AsyncSession = Depends(get_db),
 ):
-    """Log in with Email and Password, receiving an HttpOnly auth cookie."""
+    """Log in with Email and Password, receiving an HttpOnly auth cookie and access_token."""
     stmt = select(User).where(User.email == payload.email.lower().strip())
     res = await db.execute(stmt)
     user = res.scalar_one_or_none()
@@ -113,6 +153,8 @@ async def login(
     return {
         "success": True,
         "message": "Login successful",
+        "access_token": token,
+        "token_type": "bearer",
         "user": UserResponse.model_validate(user),
     }
 

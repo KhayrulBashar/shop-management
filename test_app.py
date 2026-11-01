@@ -31,7 +31,23 @@ async def run_tests():
         res = await client.post("/api/auth/login", json=login_payload)
         assert res.status_code == 200, f"Login failed: {res.text}"
         assert "access_token" in client.cookies, "HttpOnly cookie access_token not set"
-        print("[PASS] 3. /api/auth/login -> 200 OK & HttpOnly access_token cookie set")
+        login_data = res.json()
+        assert "access_token" in login_data, "access_token missing in login response"
+        print("[PASS] 3a. /api/auth/login -> 200 OK, HttpOnly cookie & access_token JSON verified")
+
+        # 3b. Test OAuth2 Password Token Endpoint (Swagger UI Authorize button)
+        oauth2_res = await client.post("/api/auth/token", data={"username": "admin@shop.com", "password": "Admin123456"})
+        assert oauth2_res.status_code == 200, f"OAuth2 token endpoint failed: {oauth2_res.text}"
+        oauth2_data = oauth2_res.json()
+        assert "access_token" in oauth2_data and oauth2_data.get("token_type") == "bearer"
+        print("[PASS] 3b. /api/auth/token (OAuth2 form for Swagger UI Authorize) -> 200 OK & Bearer token returned")
+
+        # 3c. Test Bearer Header Authorization (Direct Token without cookie)
+        bearer_token = oauth2_data["access_token"]
+        async with AsyncClient(transport=transport, base_url="http://test") as raw_client:
+            bearer_res = await raw_client.get("/api/dashboard/stats", headers={"Authorization": f"Bearer {bearer_token}"})
+            assert bearer_res.status_code == 200, f"Bearer auth failed: {bearer_res.text}"
+            print("[PASS] 3c. Direct Header Authorization: Bearer <token> -> 200 OK")
 
         # 4. Dashboard Stats
         res = await client.get("/api/dashboard/stats")

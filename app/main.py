@@ -63,6 +63,7 @@ app = FastAPI(
     description="Modern Production-Quality Shop Management System",
     version="1.0.0",
     lifespan=lifespan,
+    swagger_ui_parameters={"persistAuthorization": True},
 )
 
 # CORS Middleware
